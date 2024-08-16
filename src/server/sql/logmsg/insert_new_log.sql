@@ -4,4 +4,4 @@
 
 --Inserts a new log into the table
 INSERT INTO logmsg (log_type, log_message, log_time)
-VALUES (${logType}, ${logMessage}, ${logTime});
+VALUES (log_msg_type ${logType}, TEXT ${logMessage}, TIMESTAMP ${logTime});

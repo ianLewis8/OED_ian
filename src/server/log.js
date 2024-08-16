@@ -7,6 +7,7 @@ const logFile = require('./config').logFile;
 const LogEmail = require('./models/LogEmail');
 const { getConnection } = require('./db');
 const moment = require('moment');
+const LogMsg = require('./models/LogMsg');
 
 /**
  * Represents the importance of a message to be logged
@@ -104,6 +105,19 @@ class Logger {
 				}
 			})();
 		}
+
+		// INSERT LOG INTO DATABASE
+		let logType = level.name;
+		let logTime = moment().format('YYYY-MM-DD HH:mm:ss');
+		let logMessage = message;
+		const logMsg = new LogMsg(logType, logTime, logMessage);
+		(async () => {
+			try {
+				await logMsg.insert(conn);
+			} catch (err) {
+				console.error(`Error while inserting LogMsg ${err} (${err.stack})`);
+			}
+		})();
 	}
 
 	/**
